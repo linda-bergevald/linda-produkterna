@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="css/style.css">
+
+<meta charset="UTF-8">
+
+<head>
+</head>
+
+<body>
+    <header>
+        <ul>
+            <!--Gör en meny. Länkar til olika sidor.-->
+            <li><a href="index.html">Hem</a></li>
+            <li><a href="products.html">Produkter</a></li>
+            <li><a href="about.html">Om</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+            <li><a href="documentation.html">Dokumentation</a></li>
+        </ul>
+    </header>
+    
+    <main>
+        <!--Skriver ut texten-->
+        <h1>Köp diskborstar av hög kvalitet här!</h1>
+        
+        <!--Fixar slidern med olika bilder-->
+        <div id="slider-container-outer">
+            <div id="slider-container" class="slider-container-transition">
+                <img class="slider-item" data-position="1" src="img/diskborstar_1.jpg">
+                <img class="slider-item" data-position="2" src="img/diskborstar_2.jpg">
+                <img class="slider-item" data-position="3" src="img/diskborstar_3.png">
+            </div>
+        </div>
+        <!--En knapp som gör att man kan bläddra mellan bilderna i slidern-->
+        <button id="move-button">Move Item</button>
+        
+        <script>
+            const FlexSlider = {
+	num_items: document.querySelectorAll(".slider-item").length,
+	
+	current: 1,
+
+	init: function() {
+		document.querySelectorAll(".slider-item").forEach(function(element, index) {
+			element.style.order = index+1;
+		});
+
+		this.addEvents();
+	},
+
+	addEvents: function() {
+		var that = this;
+
+		document.querySelector("#move-button").addEventListener('click', () => {
+			this.gotoNext();
+		});
+
+		document.querySelector("#slider-container").addEventListener('transitionend', () => {
+			this.changeOrder();
+		});
+	},
+
+	changeOrder: function() {
+		if(this.current == this.num_items)
+			this.current = 1;
+		else 
+			this.current++;
+
+		let order = 1;
+
+		for(let i=this.current; i<=this.num_items; i++) {
+			document.querySelector(".slider-item[data-position='" + i + "']").style.order = order;
+			order++;
+		}
+
+		for(let i=1; i<this.current; i++) {
+			document.querySelector(".slider-item[data-position='" + i + "']").style.order = order;
+			order++;
+		}
+
+		document.querySelector("#slider-container").classList.remove('slider-container-transition');
+		document.querySelector("#slider-container").style.transform = 'translateX(0)';
+	},
+
+	gotoNext: function() {
+		document.querySelector("#slider-container").classList.add('slider-container-transition');
+		document.querySelector("#slider-container").style.transform = 'translateX(-100%)';
+	}
+};
+
+FlexSlider.init();
+        </script>
+          
+    </main>
+
+</body>
+
+</html>
